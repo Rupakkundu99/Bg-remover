@@ -4,6 +4,19 @@ import userModel from '../models/usermodel.js'
 
 // API Controller function to manage clerk user with database
 //https://localhost:5000/api/user/webhooks
+const userCredits=async(req,res)=>{
+
+    try {
+        const {clerkId}=req.body
+        const userData=await userModel.findOne({clerkId})
+        res.json({success:true,credits:userData.creditBalance})
+
+    } 
+        catch (error) {
+        console.log(error.message)
+        res.json({success:false,message:error.message})
+    }
+}
 const clerkWebhooks=async(req,res)=>{
     try{
         //create a svix instance with clerk webhook secret
@@ -52,4 +65,6 @@ const clerkWebhooks=async(req,res)=>{
         res.json({success:false,message:"Failed"})
     }
 }
-export {clerkWebhooks}
+export {clerkWebhooks,userCredits}
+
+//For user credit data
